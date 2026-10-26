@@ -95,6 +95,12 @@ For a 256 KiB image with the banks in the order 0, 1, 8, 9:
 SAD, the Semi Automatic Disassembler. See [test/RESULTS.md](test/RESULTS.md) for the method
 and the results.
 
+### Check the p-code with the emulator
+
+`test/run-emulator-check.sh` runs the Ford function lookup routines of an image in Ghidra's
+p-code emulator and compares the results with an independent calculation. See
+[docs/emulator-check.md](docs/emulator-check.md) for the method and the results.
+
 ## Contributing
 
 Any contributions you make are **greatly appreciated**.

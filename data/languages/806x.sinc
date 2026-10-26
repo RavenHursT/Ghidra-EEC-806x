@@ -453,20 +453,34 @@ macro resultFlags(res) {
 	V = 0;
 }
 
+# Additions, subtractions and compares set N to the sign of the true result, also when the
+# result overflows: N is the sign bit of the result exclusive-or V (EEC-IV Software Manual,
+# ADCB, AD2B, CMPB, SB2B, DECB, NEGB; Intel 8096 user manual, PSW: "It is correct even if an
+# overflow occurs"). JGE, JGT, JLE and JLT test N, so they compare signed values correctly.
 macro additionFlags(op1, op2, res) {
 	Z = (res == 0);
-	N = (res s< 0);
 	C = carry(op1, op2);
 	V = scarry(op1, op2);
+	N = (res s< 0) ^^ V;
 	VT = V| VT;
 }
 
 macro subtractFlags(op1, op2, res) {
-	N = (res s< 0);
 	Z = (res == 0);
 	C = (op1 < op2) == 0;
 	V = sborrow(op1, op2);
+	N = (res s< 0) ^^ V;
 	VT = VT | V;
+}
+
+# INC and INCB set N to the sign bit of the result (EEC-IV Software Manual, INCB and INCW: "One
+# if result is in the range of 80 to FF").
+macro incrementFlags(op1, res) {
+	Z = (res == 0);
+	N = (res s< 0);
+	C = carry(op1, 1);
+	V = scarry(op1, 1);
+	VT = V | VT;
 }
 
 macro stickyFlagW(source, shift) {
@@ -684,13 +698,13 @@ macro setSignedShiftRightCarryFlag(shiftee,amount) {
 
 :INC wreg                           is op8=0x7; wreg {
 	local tmp = wreg + 1;
-	additionFlags(wreg, 1, tmp);
+	incrementFlags(wreg, tmp);
 	wreg = tmp;
 }
 
 :INCB breg                          is op8=0x17; breg {
 	local tmp:1 = breg + 1;
-	additionFlags(breg, 1, tmp);
+	incrementFlags(breg, tmp);
 	breg = breg + 1;
 }
 
