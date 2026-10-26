@@ -27,7 +27,7 @@ non-matching row to `.claude/local-data/ghidra/` in the main clone.
 
 ## Inputs
 
-* Image: the owner's 1996 F-350 controller image (TDE1). 262,144 bytes: four 64 KiB blocks in
+* Image: a 1996 F-350 7.3L controller image (Ford strategy TDE1). 262,144 bytes: four 64 KiB blocks in
   bank order 0, 1, 8, 9. The bytes of each bank start at offset 0x2000 in its block. Bank 8 holds
   the code; bank 0 is a copy of bank 8; banks 1 and 9 hold calibration data.
 * References, made by the reference worker with a patched SAD 4.13 (`test/sad/` on the branch

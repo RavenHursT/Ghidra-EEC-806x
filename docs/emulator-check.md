@@ -5,7 +5,7 @@ independent calculation for all 7,708 lookups of the check. The fix sets the N f
 the true result of an addition, a subtraction or a compare. Before the fix, 512 lookups of two
 signed-x functions gave a wrong result.
 
-The six shift curves of the TDE1 image (a 1996 F-350) are read only by the shift routine at
+The six shift curves of the test image (Ford strategy TDE1, a 1996 F-350 7.3L) are read only by the shift routine at
 0x89e10. Each curve address is the base register Rfc plus an immediate offset in an `AD3W`
 instruction. No descriptor or pointer record points at the curves.
 
