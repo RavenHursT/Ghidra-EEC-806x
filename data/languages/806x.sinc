@@ -639,17 +639,18 @@ cc: "E"    is cond=15 { tmp:1 = (Z == 1); export tmp; }
 	oper16 = result;
 }
 
+# push and pop move 16-bit words. Ghidra 12 rejects the 4-byte values these two used to
+# pass, so they now pass 2 bytes and keep the same layout: INT_MASK in the high byte.
 :POPP                               is op8=0xf3 {
-	local result:4 = 0;
+	local result:2 = 0;
 	pop(result);
-	PSW = result:2;
-	local resultHi = result >> 8;
-	INT_MASK = resultHi:1;
+	PSW = zext(result);
+	INT_MASK = result(1);
 }
 
 :PUSHP                              is op8=0xf2 {
-	val:4 = (zext(INT_MASK) << 8) | zext(PSW);
-	push(val);
+	local val:4 = (zext(INT_MASK) << 8) | PSW;
+	push(val:2);
 	resetFlags();
 }
 
